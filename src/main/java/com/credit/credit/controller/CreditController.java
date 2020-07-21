@@ -18,8 +18,8 @@ public class CreditController {
     public Flux<Credit> getAllCredits(){
         return creditService.getAll();
     }
-    @GetMapping("{id}")
 
+    @GetMapping("{id}")
     public Mono<Credit> getCreditById(@PathVariable("id") String accountId){
         return creditService.getById(accountId);
     }
