@@ -22,8 +22,12 @@ public class Credit {
     public String typeAccount;
     public double creditLimit;
     public LocalDate creationDate;
+    public LocalDate expirationPayment;
     public String customerId;
     @Transient
     public List<String> transactions;
 
+    public Credit(){
+        super();
+    }
 }
