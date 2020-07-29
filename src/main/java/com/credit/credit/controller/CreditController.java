@@ -62,4 +62,11 @@ public class CreditController {
                 });
     }
 
+    @GetMapping("/expiration/{customerId}")
+    public Mono getCreditBlocked(@PathVariable("customerId") String id){
+        Mono mono = creditService.getByCustomerId(id)
+                .filter(credit -> credit.getExpirationPayment().compareTo(LocalDate.now())<0)
+                .collectList();
+        return mono;
+    }
 }
