@@ -27,4 +27,6 @@ public class CreditService {
     public Mono delete(String id){
         return creditRepository.deleteById(id);
     }
+    public Flux<Credit> getByCustomerId(String customerId){return creditRepository.findByCustomerId(customerId);}
+
 }
