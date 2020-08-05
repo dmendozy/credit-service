@@ -1,5 +1,6 @@
 package com.credit.credit.controller;
 
+import com.credit.credit.adds.Bank;
 import com.credit.credit.adds.Transaction;
 import com.credit.credit.model.Credit;
 import com.credit.credit.service.CreditService;
@@ -12,6 +13,7 @@ import reactor.core.publisher.Mono;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/credits")
@@ -33,8 +35,16 @@ public class CreditController {
     }
 
     @PostMapping
-    public Mono<Credit> createCredit(@Validated @RequestBody Credit credit){
-        return creditService.save(credit);
+    public Mono createCredit(@Validated @RequestBody Credit credit){
+                Mono bank = webClientBuilder
+                .build()
+                .put()
+                .uri("http://localhost:8080/banks/"+credit.getBankId()+"/"+credit.getCustomerId())
+                .retrieve()
+                .bodyToMono(Bank.class);
+        return bank.flatMap(b->{
+            return creditService.save(credit);
+        });
     }
 
     @PutMapping("{id}")
