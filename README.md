@@ -1,4 +1,4 @@
-Bootcamp-project2
+Credit service
 ======================
 # Getting Started
 This project is based on Spring Boot microservices using the reactive stack, read more info there https://spring.io/reactive
@@ -17,36 +17,36 @@ This project is based on Spring Boot microservices using the reactive stack, rea
 # Building
 ## Windows
 1. Install [Docker Desktop](https://www.docker.com/products/docker-desktop).
-2. Create an image for MongoDB
-```
-docker pull mongo:latest
-```
-3. Create a container for the database
-```
-docker run -d -p 27017:27017 --name bootcamp-mongodb mongo:latest
-```
-4. Check
-```
-docker ps
-```
-5. Clone each repository called project2-* in my profile
-6. Create each image and container using the following code:
+2. Create an image and container for credit-service using the following code:
 ```
 mvn install
-docker build -f Dockerfile -t credit-service
-docker run -p 8085:8085 --name credit-service credit-service
+docker build . -t credit-service
+docker run -p 8090:8090 --name credit-service credit-service
 ```
-7. After create all images and container, use docker compose to start all services from project2-config
-```
-docker-compose up
-```
+# CRUD
+
+| HTTP Verb  |     `/credits`  |      `/credits/{creditId}`      |   
+| ---------- | :---------------: | :---------------: |
+| **POST**| ADD new credit | - |  
+| **GET**| GET all credits | GET credit by Id |
+| **PUT**| - | EDIT credit by Id|  
+| **DELETE**| - |DELETE credit by Id|  
+
+
+# Operations
+| HTTP Verb  |     `credits/customer/{customerId}`  |`credits/search/{bankId}/{firstDate}/{lastDate}`  |  `credits/expiration/{customerId}`  |
+| ---------- | :---------------: |:---------------: |:---------------: |
+| **GET**| GET customers by customerId |GET credits by date range |GET credits expirates by customerId |
+
+| HTTP Verb  |     `/credits/pay/{creditId}/{amount}`  |`/credits/charge/{creditId}/{amount}`  |
+| ---------- | :---------------: |:---------------: |
+| **GET**|Pay credit|Add credit comsumption|
+
 
 # Architecture
 
-![Architecture](https://raw.githubusercontent.com/dmendozy/project2-config/master/files/architecture.png)
+![Architecture](https://raw.githubusercontent.com/dmendozy/config-service/master/files/arch.png)
 
 # Authors
 
 * **Danny Mendoza Yenque** - *Everis Bootcamp Microservices July 2020* - [DannyMendoza](https://github.com/dmendozy)
-
-
