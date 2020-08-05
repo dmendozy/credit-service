@@ -60,8 +60,8 @@
         <appender-ref ref="Console" />
     </root>
 
-    <!-- LOG "com.plantplaces.*" at TRACE level -->
-    <logger name="com.plantplaces" level="trace" additivity="false">
+    <!-- LOG "com.credit.*" at TRACE level -->
+    <logger name="com.credit" level="trace" additivity="false">
         <appender-ref ref="RollingFile" />
         <appender-ref ref="Console" />
         <appender-ref ref="SevereRollingFile" />

@@ -28,7 +28,19 @@ public class Credit {
     @Transient
     public List<String> transactions;
 
-    public Credit(){
+    public Credit() {
         super();
+    }
+
+    public Credit(String creditId, String bankId, String numberCredit, String typeAccount, double creditAvailable, double creditConsumed, LocalDate creationDate, LocalDate expirationPayment, String customerId) {
+        this.creditId = creditId;
+        this.bankId = bankId;
+        this.numberCredit = numberCredit;
+        this.typeAccount = typeAccount;
+        this.creditAvailable = creditAvailable;
+        this.creditConsumed = creditConsumed;
+        this.creationDate = creationDate;
+        this.expirationPayment = expirationPayment;
+        this.customerId = customerId;
     }
 }
