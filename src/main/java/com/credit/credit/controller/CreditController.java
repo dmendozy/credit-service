@@ -35,15 +35,7 @@ public class CreditController {
 
     @PostMapping
     public Mono createCredit(@Validated @RequestBody Credit credit) {
-        Mono bank = webClientBuilder
-                .build()
-                .put()
-                .uri("http://localhost:8080/banks/" + credit.getBankId() + "/" + credit.getCustomerId())
-                .retrieve()
-                .bodyToMono(Bank.class);
-        return bank.flatMap(b -> {
-            return creditService.save(credit);
-        });
+        return creditService.save(credit);
     }
 
     @PutMapping("{id}")
@@ -92,9 +84,41 @@ public class CreditController {
                           @PathVariable("amount") double amount) {
         return creditService.getById(creditId)
                 .flatMap(credit -> {
+                    if (credit.getCreditConsumed() <= 0){
+                        credit.setCreditAvailable(credit.getCreditAvailable() + amount);
+                        credit.setCreditConsumed(0);
+                    }
                     if (credit.getCreditConsumed() > 0) {
                         credit.setCreditAvailable(credit.getCreditAvailable() + amount);
-                        credit.setCreditConsumed(credit.getCreditConsumed() - amount);
+                        if (credit.getCreditConsumed()<amount){
+                            credit.setCreditConsumed(0);
+                        }else{
+                            credit.setCreditConsumed(credit.getCreditConsumed() - amount);
+                        }
+                    }
+                    return creditService.save(credit);
+                });
+    }
+
+    //Pay credit interbank
+    @PutMapping("/pay/{creditId}/{amount}/{bankId}")
+    public Mono payCredit(@PathVariable("creditId") String creditId,
+                          @PathVariable("amount") double amount,
+                          @PathVariable("bankId") String bankId) {
+        return creditService.getById(creditId)
+                .filter(credit -> credit.getBankId().equals(bankId))
+                .flatMap(credit -> {
+                    if (credit.getCreditConsumed() <= 0){
+                        credit.setCreditAvailable(credit.getCreditAvailable() + amount);
+                        credit.setCreditConsumed(0);
+                    }
+                    if (credit.getCreditConsumed() > 0) {
+                        credit.setCreditAvailable(credit.getCreditAvailable() + amount);
+                        if (credit.getCreditConsumed()<amount){
+                            credit.setCreditConsumed(0);
+                        }else{
+                            credit.setCreditConsumed(credit.getCreditConsumed() - amount);
+                        }
                     }
                     return creditService.save(credit);
                 });
