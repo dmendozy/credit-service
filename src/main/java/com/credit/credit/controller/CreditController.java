@@ -139,7 +139,7 @@ public class CreditController {
                     Mono<Transaction> transactionMono = webClientBuilder
                             .build()
                             .post()
-                            .uri("http://localhost:8080/transactions/")
+                            .uri("http://transaction-service/transactions/")
                             .body(Mono.just(transaction), Transaction.class)
                             .retrieve()
                             .bodyToMono(Transaction.class);
